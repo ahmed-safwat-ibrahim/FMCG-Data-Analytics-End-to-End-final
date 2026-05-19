@@ -1,0 +1,102 @@
+Data Dictionary & Schema
+The database is designed using a Snowflake Schema to ensure high performance and analytical accuracy. It consists of 10 tables categorized into Dimension Tables and Fact Tables.
+
+A. Dimension Tables (Descriptive & Filtering)
+1. Dim_Calendar
+Used for time analysis and temporal comparisons.
+
+Date_Key: Primary date key.
+
+Year / Quarter / Month_Name: Year, quarter, and month name.
+
+Is_Weekend: Indicates whether the day is a weekend (1) or a working day (0).
+
+2. Dim_Geography
+Defines distribution regions and geographic hierarchies.
+
+Region_Key: Primary region key.
+
+Province / City: Province/Governorate and city names.
+
+Territory: Administrative sector (e.g., Greater Cairo, Delta, Upper Egypt).
+
+Population_Density: Population density (serves as an indicator of expected demand volume).
+
+3. Dim_Products
+Contains detailed information about all beverage products.
+
+Product_Key: Primary product key.
+
+Brand: Brand name (e.g., Shams Cola, Pepsi, etc.).
+
+Sub_Category: Packaging type (Can, PET, Glass).
+
+Unit_Cost / Standard_Price: Cost and selling price per case (carton).
+
+Capacity_Litre / Weight_Kg: Volume capacity in liters and total weight per case.
+
+4. Dim_Stores
+Stores details about customers and retail locations.
+
+Store_Key: Primary store key.
+
+Channel / Sub_Channel: Sales channel (Traditional, Modern) and sub-channel (e.g., Kiosk, Supermarket).
+
+Store_Grade: Store classification based on sales volume (A, B, C).
+
+Payment_Term: Payment method (Cash, Credit).
+
+Latitude / Longitude: Geographical coordinates for mapping and spatial analysis.
+
+5. Dim_Salesmen
+Contains details about the sales team.
+
+Salesman_Key: Primary salesman key.
+
+Position: Type of salesman (Pre-Seller, Van-Seller).
+
+Commission_Rate: The commission percentage allocated to the salesman.
+
+6. Dim_Promotions
+Tracks marketing offers and campaigns.
+
+Promo_Key: Primary promotion key.
+
+Discount_Percentage: Discount rate applied.
+
+Promo_Budget: Allocated marketing budget for the promotion.
+
+B. Fact Tables (Transactional & Metrics)
+7. Fact_Sales (Contains over 2 million transactions)
+Transaction_ID: Invoice/Transaction number.
+
+Foreign Keys: Date_Key, Store_Key, Product_Key, Salesman_Key, Promo_Key (used for joining with dimension tables).
+
+Quantity_Cases: Number of cases sold.
+
+Qty_Returned / Return_Reason: Quantity of returned items and the reason for return (e.g., Damaged, Expired).
+
+Gross_Sales / Net_Sales: Total and net sales value after applying discounts.
+
+COGS (Cost of Goods Sold): The direct costs attributable to the production of the goods sold (used to calculate gross profit).
+
+8. Fact_Targets
+Target_Amount_EGP: The monthly financial target value the salesman is required to achieve (in Egyptian Pounds).
+
+9. Fact_Market_Share
+Volume_Share_% / Value_Share_%: Market share for both the company and its competitors, measured by volume and value.
+
+Competitor_Price: The average selling price of competitor products in the market.
+
+Availability_Status: The availability status of competitor products in the market.
+
+10. Fact_Visits
+Tracks field visits made by the sales team.
+
+Is_Ordered: Did the visit result in a purchase order? (1 = Yes, 0 = No).
+
+OOS_Items_Count: Number of Out-Of-Stock (OOS) items missing from the shelf.
+
+Visit_Duration_Minutes: Time spent by the salesman inside the store.
+
+GPS_Distance_Check_Meters: The distance variance between the salesman's actual GPS location and the store's registered coordinates (used to detect fraud or fake visits).
